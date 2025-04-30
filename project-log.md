@@ -33,6 +33,43 @@
 - Daily logs will capture completed tasks, decisions made, and next steps
 
 ---
+# 🗓️ Project Log - ProTask
+
+A detailed log of progress, decisions, and key milestones in the ProTask app.
+
+---
+
+## 📅 2025-04-22
+**Project ProTask initiated**
+- Defined project scope and objectives
+- Selected tech stack: HTML, CSS, JavaScript
+
+## 📅 2025-04-23
+**Basic layout created**
+- Created `index.html`, `style.css`, and `script.js`
+- Initial Pomodoro timer working
+
+## 📅 2025-04-30
+**GitHub Project Setup**
+- Created a new GitHub repository
+- Enabled GitHub Projects for task tracking
+- Created first few issues and grouped tasks under categories
+
+## 📅 2025-05-01
+**Documentation Added**
+- `README.md`: Overview, features, workflow, and tech stack
+- `.github/ISSUE_TEMPLATE/feature_request.md`: For new features
+- `.github/ISSUE_TEMPLATE/bug_report.md`: For bug tracking
+
+**Labels Created**
+- Priority: `priority: high`, `medium`, `low`
+- Type: `type: bug`, `type: enhancement`, `type: feature`, `type: UI`
+- Status: `status: to do`, `in progress`, `done` *(used mainly for reference)*
+
+**Planning Steps Taken**
+- Identified core modules and milestones
+- Prioritized issues and tagged them with appropriate labels
+- Decided on consistent commit message format and documentation structure
 
 _This file will be updated regularly to reflect daily progress._
 
