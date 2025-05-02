@@ -71,5 +71,33 @@ A detailed log of progress, decisions, and key milestones in the ProTask app.
 - Prioritized issues and tagged them with appropriate labels
 - Decided on consistent commit message format and documentation structure
 
+## [2025-05-01] Integrated ProTask App Release
+
+### ✅ What’s New
+
+- **Integrated Pomodoro and Task Manager** into one cohesive app.
+- **Live Task Linking**: Selected task appears directly in the Pomodoro timer.
+- **Dark Mode Toggle** added for user comfort.
+- Improved **UI design** with soft shadows, spacing, and visual hierarchy.
+- Simplified layout for better usability on mobile and desktop.
+
+### 📁 Folder Changes
+
+- Moved old apps to:
+  - `/archive/old-pomodoro/`
+  - `/archive/old-task-manager/`
+- Created new root folder: `/protask-app/`
+
+### 🔧 Tech Stack
+
+- Pure HTML, CSS, and JavaScript.
+- No external frameworks used.
+
+### 📌 Next Planned Features
+
+- Settings page (custom timer durations)
+- History of completed Pomodoros
+- Daily productivity summary
+
 _This file will be updated regularly to reflect daily progress._
 
