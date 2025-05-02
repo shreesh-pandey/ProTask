@@ -1,48 +1,70 @@
-# ProTask
+# 🧠 ProTask — Productivity Simplified
 
-ProTask is a productivity web app designed to help users stay focused and organized using the Pomodoro Technique. It combines a task manager, customizable Pomodoro timer, reminder pop-ups, and a daily focus board into one seamless experience.
+**ProTask** is a simple, all-in-one productivity web app that combines a **Pomodoro timer** with a smart **Task Manager**. It’s designed for focused work sessions and seamless task handling — no distractions, just results.
 
-## 🚀 Features
+---
 
-### Core Features
-- **Task Manager** – Add, edit, categorize, and prioritize tasks with due dates
-- **Pomodoro Timer** – 25-min work sessions with automatic breaks and custom durations
-- **Task Pop-up Reminders** – Notify users of upcoming tasks with snooze and mark-done options
-- **Daily Focus Board** – Display daily tasks with statuses (Not Started, In Progress, Completed)
-- **Session History** – Log Pomodoro sessions and provide daily/weekly productivity summaries
-- **Settings Panel** – Customize durations, notifications, and switch between light/dark themes
+## 🔧 Features
 
-### User Workflow Support
-- Morning task review/setup
-- Pomodoro sessions tied to selected tasks
-- Auto break transitions
-- End-of-day summaries with performance score
+- ⏱️ Pomodoro Timer (25–5 work-break cycle)
+- ✅ Task Manager with:
+  - Task Categories
+  - Completion Toggle
+  - Priority Indicator
+- 📅 Task-Pomodoro Integration (selected task shows in timer)
+- 🌙 Dark Mode Toggle
+- 📦 Lightweight, Responsive, No Dependencies
 
-## 📸 Screenshots
-*(To be added once available)*
+---
 
-## 📦 Installation & Setup
-1. Clone the repo: `git clone https://github.com/yourusername/protask`
-2. Navigate into the directory: `cd protask`
-3. Open the app locally in browser or run a dev server *(instructions to be added based on implementation)*
+## 📷 Demo (Coming Soon)
 
-## 🛠 Tech Stack
-- HTML, CSS, JavaScript (no framework)
-- Local Storage or IndexedDB (for now)
-- GitHub Pages (for hosting)
+Screenshots and live demo will be added here.
 
-## 🗂 Project Management
-- Tasks and progress tracked using [GitHub Projects](https://github.com/yourusername/protask/projects)
-- [Issue templates](.github/ISSUE_TEMPLATE) used for structured contributions
+---
 
-## 🧩 Future Enhancements
-- Multi-project support
-- Multi-device sync
-- Integrations with Todoist, Trello, etc.
+## 🚀 Getting Started
 
-## 🤝 Contributing
-Coming soon: Contribution guidelines and community standards.
+You can clone and run the app locally in 3 steps:
 
-## 📄 License
-MIT
+```bash
+git clone https://github.com/your-username/protask.git
+cd protask-app
+open index.html
 
+---
+
+This app is entirely front-end based — no installation required.
+
+---
+
+🗂️ Folder Structure
+/protask-app/              → New integrated app
+/archive/
+  └── old-pomodoro/        → Previous standalone Pomodoro app
+  └── task-manager/        → Previous standalone Task Manager
+
+---
+
+🛠️ Development To-Do (Next Phases)
+
+[] Add Daily Summary Feature
+
+[] Add Settings Panel (custom timers)
+
+[] Add Completed History View
+
+[] Add Sound/Vibration on Timer End
+
+---
+
+🙌 Contributing
+
+Feel free to open issues or pull requests. Coming soon: Contribution Guide + Feature Roadmap.
+
+---
+
+📄 License
+MIT — free to use and modify.
+
+---
