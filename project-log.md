@@ -99,5 +99,30 @@ A detailed log of progress, decisions, and key milestones in the ProTask app.
 - History of completed Pomodoros
 - Daily productivity summary
 
+---
+
+📅 2025-05-02 – Deployment & Issue Tracking
+📦 Deployed ProTask app to GitHub Pages
+
+Initial issue: GitHub Pages displayed README.md instead of app.
+
+Root cause: Main HTML file was named ProTask.html instead of index.html.
+
+Resolution: Renamed to index.html, re-published successfully.
+
+🐛 Created Bug Report Issues
+
+Issue 1: No Pause button in Pomodoro
+➤ Description: The app, once started, doesn’t allow users to pause the timer.
+
+Issue 2: No Reset button in Pomodoro
+➤ Description: The timer cannot be reset mid-session or during break.
+
+🗃️ Archived old apps:
+
+Moved previous Pomodoro and Task Manager apps to archive/old-pomodoro/ and archive/task-manager/.
+
+---
+
 _This file will be updated regularly to reflect daily progress._
 
