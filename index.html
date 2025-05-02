@@ -11,12 +11,23 @@
     body {
       background-color: #f8f9fa;
     }
+
     .card {
       margin-bottom: 20px;
     }
-    .priority-high { color: #dc3545; }
-    .priority-medium { color: #fd7e14; }
-    .priority-low { color: #198754; }
+
+    .priority-high {
+      color: #dc3545;
+    }
+
+    .priority-medium {
+      color: #fd7e14;
+    }
+
+    .priority-low {
+      color: #198754;
+    }
+
     .completed-task {
       text-decoration: line-through;
       color: #6c757d;
@@ -113,7 +124,6 @@
     // Task manager logic
     const taskForm = document.getElementById("taskForm");
     const taskList = document.getElementById("taskList");
-    let taskBeingEdited = null;
 
     taskForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -124,34 +134,21 @@
 
       if (task === "") return;
 
-      if (taskBeingEdited) {
-        // Update existing task
-        taskBeingEdited.querySelector("strong").textContent = task;
-        taskBeingEdited.querySelector(".badge").textContent = category;
+      const li = document.createElement("li");
+      li.className = `list-group-item d-flex justify-content-between align-items-center`;
+      li.innerHTML = `
+        <div>
+          <strong>${task}</strong> <span class="badge bg-secondary ms-2 category">${category}</span>
+          <span class="ms-2 priority-${priority}">${priority}</span>
+        </div>
+        <div>
+          <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+          <button class="btn btn-info btn-sm" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+        </div>
+      `;
 
-        const prioritySpan = taskBeingEdited.querySelector("span.ms-2");
-        prioritySpan.textContent = priority;
-        prioritySpan.className = `ms-2 priority-${priority}`;
-
-        taskBeingEdited = null;
-      } else {
-        // Create new task
-        const li = document.createElement("li");
-        li.className = `list-group-item d-flex justify-content-between align-items-center`;
-        li.innerHTML = `
-          <div>
-            <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
-            <span class="ms-2 priority-${priority}">${priority}</span>
-          </div>
-          <div>
-            <button class="btn btn-info btn-sm me-2" onclick="editTask(this)"><i class="fas fa-pen"></i></button>
-            <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
-            <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-          </div>
-        `;
-        taskList.appendChild(li);
-      }
-
+      taskList.appendChild(li);
       taskForm.reset();
     });
 
@@ -165,17 +162,52 @@
       li.classList.toggle("completed-task");
     }
 
+    // Edit task logic
     function editTask(button) {
       const li = button.closest("li");
       const taskText = li.querySelector("strong").textContent;
-      const category = li.querySelector(".badge").textContent;
-      const priority = li.querySelector("span.ms-2").textContent.toLowerCase();
+      const categorySpan = li.querySelector(".category");
+      const prioritySpan = li.querySelector(".priority-high, .priority-medium, .priority-low");
 
+      // Get the current category and priority values
+      const currentCategory = categorySpan.textContent;
+      const currentPriority = prioritySpan.textContent;
+
+      // Pre-fill form with current task data
       document.getElementById("taskInput").value = taskText;
-      document.getElementById("categoryInput").value = category;
-      document.getElementById("priorityInput").value = priority;
+      document.getElementById("categoryInput").value = currentCategory;
+      document.getElementById("priorityInput").value = currentPriority.toLowerCase();
 
-      taskBeingEdited = li;
+      // Remove the task and allow the user to add it again
+      li.remove();
+
+      // Allow the user to submit and update the task
+      taskForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const updatedTask = document.getElementById("taskInput").value.trim();
+        const updatedCategory = document.getElementById("categoryInput").value;
+        const updatedPriority = document.getElementById("priorityInput").value;
+
+        if (updatedTask === "") return;
+
+        const updatedLi = document.createElement("li");
+        updatedLi.className = `list-group-item d-flex justify-content-between align-items-center`;
+        updatedLi.innerHTML = `
+          <div>
+            <strong>${updatedTask}</strong> <span class="badge bg-secondary ms-2 category">${updatedCategory}</span>
+            <span class="ms-2 priority-${updatedPriority}">${updatedPriority}</span>
+          </div>
+          <div>
+            <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
+            <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-info btn-sm" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+          </div>
+        `;
+
+        taskList.appendChild(updatedLi);
+        taskForm.reset();
+      });
     }
   </script>
 
