@@ -113,6 +113,7 @@
     // Task manager logic
     const taskForm = document.getElementById("taskForm");
     const taskList = document.getElementById("taskList");
+    let taskBeingEdited = null;
 
     taskForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -123,20 +124,34 @@
 
       if (task === "") return;
 
-      const li = document.createElement("li");
-      li.className = `list-group-item d-flex justify-content-between align-items-center`;
-      li.innerHTML = `
-        <div>
-          <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
-          <span class="ms-2 priority-${priority}">${priority}</span>
-        </div>
-        <div>
-          <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-        </div>
-      `;
+      if (taskBeingEdited) {
+        // Update existing task
+        taskBeingEdited.querySelector("strong").textContent = task;
+        taskBeingEdited.querySelector(".badge").textContent = category;
 
-      taskList.appendChild(li);
+        const prioritySpan = taskBeingEdited.querySelector("span.ms-2");
+        prioritySpan.textContent = priority;
+        prioritySpan.className = `ms-2 priority-${priority}`;
+
+        taskBeingEdited = null;
+      } else {
+        // Create new task
+        const li = document.createElement("li");
+        li.className = `list-group-item d-flex justify-content-between align-items-center`;
+        li.innerHTML = `
+          <div>
+            <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
+            <span class="ms-2 priority-${priority}">${priority}</span>
+          </div>
+          <div>
+            <button class="btn btn-info btn-sm me-2" onclick="editTask(this)"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
+            <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+          </div>
+        `;
+        taskList.appendChild(li);
+      }
+
       taskForm.reset();
     });
 
@@ -148,6 +163,19 @@
     function markComplete(button) {
       const li = button.closest("li");
       li.classList.toggle("completed-task");
+    }
+
+    function editTask(button) {
+      const li = button.closest("li");
+      const taskText = li.querySelector("strong").textContent;
+      const category = li.querySelector(".badge").textContent;
+      const priority = li.querySelector("span.ms-2").textContent.toLowerCase();
+
+      document.getElementById("taskInput").value = taskText;
+      document.getElementById("categoryInput").value = category;
+      document.getElementById("priorityInput").value = priority;
+
+      taskBeingEdited = li;
     }
   </script>
 
