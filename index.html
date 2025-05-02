@@ -11,23 +11,12 @@
     body {
       background-color: #f8f9fa;
     }
-
     .card {
       margin-bottom: 20px;
     }
-
-    .priority-high {
-      color: #dc3545;
-    }
-
-    .priority-medium {
-      color: #fd7e14;
-    }
-
-    .priority-low {
-      color: #198754;
-    }
-
+    .priority-high { color: #dc3545; }
+    .priority-medium { color: #fd7e14; }
+    .priority-low { color: #198754; }
     .completed-task {
       text-decoration: line-through;
       color: #6c757d;
@@ -128,23 +117,53 @@
     taskForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const task = document.getElementById("taskInput").value.trim();
-      const category = document.getElementById("categoryInput").value;
-      const priority = document.getElementById("priorityInput").value;
+      const taskInput = document.getElementById("taskInput");
+      const categoryInput = document.getElementById("categoryInput");
+      const priorityInput = document.getElementById("priorityInput");
+
+      const task = taskInput.value.trim();
+      const category = categoryInput.value;
+      const priority = priorityInput.value;
 
       if (task === "") return;
+
+      const editingLi = document.querySelector("li.editing");
+      if (editingLi) {
+        // Update task text
+        editingLi.querySelector("strong").textContent = task;
+
+        // Update category
+        editingLi.querySelector(".badge.bg-secondary").textContent = category;
+
+        // Remove existing priority span and add updated one
+        const prioritySpans = editingLi.querySelectorAll("span");
+        prioritySpans.forEach(span => {
+          if (span.className.includes("priority-")) {
+            span.remove();
+          }
+        });
+
+        const newPrioritySpan = document.createElement("span");
+        newPrioritySpan.className = `ms-2 priority-${priority}`;
+        newPrioritySpan.textContent = priority;
+        editingLi.querySelector("div").appendChild(newPrioritySpan);
+
+        editingLi.classList.remove("editing");
+        taskForm.reset();
+        return;
+      }
 
       const li = document.createElement("li");
       li.className = `list-group-item d-flex justify-content-between align-items-center`;
       li.innerHTML = `
         <div>
-          <strong>${task}</strong> <span class="badge bg-secondary ms-2 category">${category}</span>
+          <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
           <span class="ms-2 priority-${priority}">${priority}</span>
         </div>
         <div>
           <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
+          <button class="btn btn-primary btn-sm me-2" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
           <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-          <button class="btn btn-info btn-sm" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
         </div>
       `;
 
@@ -162,52 +181,18 @@
       li.classList.toggle("completed-task");
     }
 
-    // Edit task logic
     function editTask(button) {
       const li = button.closest("li");
+      li.classList.add("editing");
+
       const taskText = li.querySelector("strong").textContent;
-      const categorySpan = li.querySelector(".category");
-      const prioritySpan = li.querySelector(".priority-high, .priority-medium, .priority-low");
+      const categoryText = li.querySelector(".badge.bg-secondary").textContent;
+      const priorityClass = Array.from(li.querySelectorAll("span")).find(span => span.className.includes("priority-"));
+      const priorityText = priorityClass ? priorityClass.textContent : "";
 
-      // Get the current category and priority values
-      const currentCategory = categorySpan.textContent;
-      const currentPriority = prioritySpan.textContent;
-
-      // Pre-fill form with current task data
       document.getElementById("taskInput").value = taskText;
-      document.getElementById("categoryInput").value = currentCategory;
-      document.getElementById("priorityInput").value = currentPriority.toLowerCase();
-
-      // Remove the task and allow the user to add it again
-      li.remove();
-
-      // Allow the user to submit and update the task
-      taskForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const updatedTask = document.getElementById("taskInput").value.trim();
-        const updatedCategory = document.getElementById("categoryInput").value;
-        const updatedPriority = document.getElementById("priorityInput").value;
-
-        if (updatedTask === "") return;
-
-        const updatedLi = document.createElement("li");
-        updatedLi.className = `list-group-item d-flex justify-content-between align-items-center`;
-        updatedLi.innerHTML = `
-          <div>
-            <strong>${updatedTask}</strong> <span class="badge bg-secondary ms-2 category">${updatedCategory}</span>
-            <span class="ms-2 priority-${updatedPriority}">${updatedPriority}</span>
-          </div>
-          <div>
-            <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
-            <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-            <button class="btn btn-info btn-sm" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
-          </div>
-        `;
-
-        taskList.appendChild(updatedLi);
-        taskForm.reset();
-      });
+      document.getElementById("categoryInput").value = categoryText;
+      document.getElementById("priorityInput").value = priorityText;
     }
   </script>
 
