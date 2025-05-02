@@ -121,8 +121,21 @@ Issue 2: No Reset button in Pomodoro
 🗃️ Archived old apps:
 
 Moved previous Pomodoro and Task Manager apps to archive/old-pomodoro/ and archive/task-manager/.
-
 ---
+📅 2025-05-03
+Worked on Issue #2: Implement task editing functionality
 
+Completed all core functionality for editing tasks: users can now update the task name, category, and priority.
+
+Identified and resolved the following sub-issues during testing:
+
+🐞 Category not updating: Category was being removed instead of updated.
+
+🐞 Priority not updating properly: Both old and new priorities were shown; now only the updated one remains.
+
+🐞 Edit button not working after one edit: Fixed logic to allow repeated edits for the same task.
+
+Verified and tested all updates successfully in the live environment.
+---
 _This file will be updated regularly to reflect daily progress._
 
