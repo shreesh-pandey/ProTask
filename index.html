@@ -11,30 +11,14 @@
     body {
       background-color: #f8f9fa;
     }
-
     .card {
       margin-bottom: 20px;
     }
-
-    .priority-high {
-      color: #dc3545;
-    }
-
-    .priority-medium {
-      color: #fd7e14;
-    }
-
-    .priority-low {
-      color: #198754;
-    }
-
+    .priority-high { color: #dc3545; }
+    .priority-medium { color: #fd7e14; }
+    .priority-low { color: #198754; }
     .completed-task {
       text-decoration: line-through;
-      color: #6c757d;
-    }
-
-    .due-date {
-      font-size: 0.875em;
       color: #6c757d;
     }
   </style>
@@ -48,6 +32,7 @@
     <div class="card">
       <div class="card-header">Pomodoro Timer</div>
       <div class="card-body text-center">
+        <h5 id="sessionLabel">Pomodoro Time</h5>
         <h2 id="timer" class="display-4">25:00</h2>
         <button class="btn btn-success m-1" onclick="startPomodoro()">Start</button>
         <button class="btn btn-warning m-1" onclick="pausePomodoro()">Pause</button>
@@ -94,6 +79,7 @@
     let pomodoroInterval;
     let timeLeft = 25 * 60;
     let isRunning = false;
+    let onBreak = false;
 
     function updateTimer() {
       const minutes = Math.floor(timeLeft / 60);
@@ -110,9 +96,24 @@
           updateTimer();
         } else {
           clearInterval(pomodoroInterval);
-          alert("Pomodoro session complete!");
+          isRunning = false;
+          if (!onBreak) {
+            alert("Pomodoro session complete! Time for a 5-minute break.");
+            startBreak();
+          } else {
+            alert("Break time over. Ready for the next Pomodoro session!");
+            resetPomodoro();
+          }
         }
       }, 1000);
+    }
+
+    function startBreak() {
+      onBreak = true;
+      timeLeft = 5 * 60;
+      document.getElementById("sessionLabel").textContent = "Break Time";
+      updateTimer();
+      startPomodoro();
     }
 
     function pausePomodoro() {
@@ -122,8 +123,10 @@
 
     function resetPomodoro() {
       clearInterval(pomodoroInterval);
-      timeLeft = 25 * 60;
       isRunning = false;
+      onBreak = false;
+      timeLeft = 25 * 60;
+      document.getElementById("sessionLabel").textContent = "Pomodoro Time";
       updateTimer();
     }
 
@@ -155,9 +158,7 @@
 
         const prioritySpans = editingLi.querySelectorAll("span");
         prioritySpans.forEach(span => {
-          if (span.className.includes("priority-")) {
-            span.remove();
-          }
+          if (span.className.includes("priority-")) span.remove();
         });
 
         const newPrioritySpan = document.createElement("span");
@@ -165,8 +166,19 @@
         newPrioritySpan.textContent = priority;
         editingLi.querySelector("div").appendChild(newPrioritySpan);
 
-        const dueDateSpan = editingLi.querySelector(".due-date");
-        dueDateSpan.textContent = dueDate ? `Due: ${new Date(dueDate).toLocaleString()}` : "";
+        const dueSpan = editingLi.querySelector(".due-date");
+        if (dueDate) {
+          if (dueSpan) {
+            dueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
+          } else {
+            const newDueSpan = document.createElement("span");
+            newDueSpan.className = "ms-2 text-muted due-date";
+            newDueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
+            editingLi.querySelector("div").appendChild(newDueSpan);
+          }
+        } else if (dueSpan) {
+          dueSpan.remove();
+        }
 
         editingLi.classList.remove("editing");
         taskForm.reset();
@@ -177,10 +189,9 @@
       li.className = `list-group-item d-flex justify-content-between align-items-center`;
       li.innerHTML = `
         <div>
-          <strong>${task}</strong> 
-          <span class="badge bg-secondary ms-2">${category}</span>
+          <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
           <span class="ms-2 priority-${priority}">${priority}</span>
-          <div class="due-date">${dueDate ? `Due: ${new Date(dueDate).toLocaleString()}` : ""}</div>
+          ${dueDate ? `<span class="ms-2 text-muted due-date"> | Due: ${new Date(dueDate).toLocaleString()}</span>` : ""}
         </div>
         <div>
           <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
@@ -211,18 +222,18 @@
       const categoryText = li.querySelector(".badge.bg-secondary").textContent;
       const priorityClass = Array.from(li.querySelectorAll("span")).find(span => span.className.includes("priority-"));
       const priorityText = priorityClass ? priorityClass.textContent : "";
-      const dueDateText = li.querySelector(".due-date").textContent.replace("Due: ", "").trim();
+      const dueDateSpan = li.querySelector(".due-date");
+      let dueDateValue = "";
+      if (dueDateSpan) {
+        const raw = dueDateSpan.textContent.replace(" | Due: ", "");
+        const date = new Date(raw);
+        dueDateValue = date.toISOString().slice(0, 16);
+      }
 
       document.getElementById("taskInput").value = taskText;
       document.getElementById("categoryInput").value = categoryText;
       document.getElementById("priorityInput").value = priorityText;
-
-      if (dueDateText) {
-        const date = new Date(dueDateText);
-        document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
-      } else {
-        document.getElementById("dueDateInput").value = "";
-      }
+      document.getElementById("dueDateInput").value = dueDateValue;
     }
   </script>
 
