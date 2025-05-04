@@ -137,5 +137,12 @@ Identified and resolved the following sub-issues during testing:
 
 Verified and tested all updates successfully in the live environment.
 ---
+
+✅ Update – Issue #5: Add task due date/time
+Date: 2025-05-04
+Summary:
+Implemented due date/time functionality in the task manager. A new datetime-local input field was added to the task creation form, allowing users to assign a deadline to each task. The due date is displayed next to the task and is also editable. The implementation ensures previous features (category, priority, completion, and editing) remain unaffected.
+
+---
 _This file will be updated regularly to reflect daily progress._
 
