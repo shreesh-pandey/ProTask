@@ -144,5 +144,12 @@ Summary:
 Implemented due date/time functionality in the task manager. A new datetime-local input field was added to the task creation form, allowing users to assign a deadline to each task. The due date is displayed next to the task and is also editable. The implementation ensures previous features (category, priority, completion, and editing) remain unaffected.
 
 ---
+
+✅ Update – Issue #8: Implement 5-minute short break timer
+Date: 2025-05-04
+Summary:
+Added a 5-minute short break timer that automatically starts after each Pomodoro session ends. Integrated the break countdown and a reset mechanism to return to the next Pomodoro cycle seamlessly.
+
+---
 _This file will be updated regularly to reflect daily progress._
 
