@@ -11,14 +11,30 @@
     body {
       background-color: #f8f9fa;
     }
+
     .card {
       margin-bottom: 20px;
     }
-    .priority-high { color: #dc3545; }
-    .priority-medium { color: #fd7e14; }
-    .priority-low { color: #198754; }
+
+    .priority-high {
+      color: #dc3545;
+    }
+
+    .priority-medium {
+      color: #fd7e14;
+    }
+
+    .priority-low {
+      color: #198754;
+    }
+
     .completed-task {
       text-decoration: line-through;
+      color: #6c757d;
+    }
+
+    .due-date {
+      font-size: 0.875em;
       color: #6c757d;
     }
   </style>
@@ -44,22 +60,25 @@
       <div class="card-header">Task Manager</div>
       <div class="card-body">
         <form id="taskForm" class="row g-3">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <input type="text" id="taskInput" class="form-control" placeholder="Enter task" required>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <select id="categoryInput" class="form-select">
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>
               <option value="Other">Other</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <select id="priorityInput" class="form-select">
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>
             </select>
+          </div>
+          <div class="col-md-3">
+            <input type="datetime-local" id="dueDateInput" class="form-control">
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">Add Task</button>
@@ -120,22 +139,20 @@
       const taskInput = document.getElementById("taskInput");
       const categoryInput = document.getElementById("categoryInput");
       const priorityInput = document.getElementById("priorityInput");
+      const dueDateInput = document.getElementById("dueDateInput");
 
       const task = taskInput.value.trim();
       const category = categoryInput.value;
       const priority = priorityInput.value;
+      const dueDate = dueDateInput.value;
 
       if (task === "") return;
 
       const editingLi = document.querySelector("li.editing");
       if (editingLi) {
-        // Update task text
         editingLi.querySelector("strong").textContent = task;
-
-        // Update category
         editingLi.querySelector(".badge.bg-secondary").textContent = category;
 
-        // Remove existing priority span and add updated one
         const prioritySpans = editingLi.querySelectorAll("span");
         prioritySpans.forEach(span => {
           if (span.className.includes("priority-")) {
@@ -148,6 +165,9 @@
         newPrioritySpan.textContent = priority;
         editingLi.querySelector("div").appendChild(newPrioritySpan);
 
+        const dueDateSpan = editingLi.querySelector(".due-date");
+        dueDateSpan.textContent = dueDate ? `Due: ${new Date(dueDate).toLocaleString()}` : "";
+
         editingLi.classList.remove("editing");
         taskForm.reset();
         return;
@@ -157,8 +177,10 @@
       li.className = `list-group-item d-flex justify-content-between align-items-center`;
       li.innerHTML = `
         <div>
-          <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
+          <strong>${task}</strong> 
+          <span class="badge bg-secondary ms-2">${category}</span>
           <span class="ms-2 priority-${priority}">${priority}</span>
+          <div class="due-date">${dueDate ? `Due: ${new Date(dueDate).toLocaleString()}` : ""}</div>
         </div>
         <div>
           <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
@@ -189,10 +211,18 @@
       const categoryText = li.querySelector(".badge.bg-secondary").textContent;
       const priorityClass = Array.from(li.querySelectorAll("span")).find(span => span.className.includes("priority-"));
       const priorityText = priorityClass ? priorityClass.textContent : "";
+      const dueDateText = li.querySelector(".due-date").textContent.replace("Due: ", "").trim();
 
       document.getElementById("taskInput").value = taskText;
       document.getElementById("categoryInput").value = categoryText;
       document.getElementById("priorityInput").value = priorityText;
+
+      if (dueDateText) {
+        const date = new Date(dueDateText);
+        document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
+      } else {
+        document.getElementById("dueDateInput").value = "";
+      }
     }
   </script>
 
