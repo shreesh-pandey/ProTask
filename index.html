@@ -7,276 +7,265 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .card {
-      margin-bottom: 20px;
-    }
+    body { background-color: #f8f9fa; }
+    .card { margin-bottom: 20px; }
     .priority-high { color: #dc3545; }
     .priority-medium { color: #fd7e14; }
     .priority-low { color: #198754; }
-    .completed-task {
-      text-decoration: line-through;
-      color: #6c757d;
-    }
+    .completed-task { text-decoration: line-through; color: #6c757d; }
   </style>
 </head>
 <body>
-  <div class="container py-4">
-    <h1 class="text-center mb-4">ProTask</h1>
+<div class="container py-4">
+  <h1 class="text-center mb-4">ProTask</h1>
 
-    <!-- Pomodoro Timer -->
-    <div class="card">
-      <div class="card-header">Pomodoro Timer</div>
-      <div class="card-body text-center">
-        <h5 id="sessionLabel">Pomodoro Time</h5>
-        <h2 id="timer" class="display-4">25:00</h2>
-        <button class="btn btn-success m-1" onclick="startPomodoro()">Start</button>
-        <button class="btn btn-warning m-1" onclick="pausePomodoro()">Pause</button>
-        <button class="btn btn-danger m-1" onclick="resetPomodoro()">Reset</button>
-      </div>
-    </div>
-
-    <!-- Timer Settings -->
-    <div class="card">
-      <div class="card-header">Timer Settings</div>
-      <div class="card-body">
-        <div class="row g-3 align-items-center">
-          <div class="col-md-6">
-            <label for="pomodoroSelect" class="form-label">Pomodoro Duration (minutes)</label>
-            <select id="pomodoroSelect" class="form-select"></select>
-          </div>
-          <div class="col-md-6">
-            <label for="breakSelect" class="form-label">Break Duration (minutes)</label>
-            <select id="breakSelect" class="form-select"></select>
-          </div>
+  <!-- Pomodoro Timer -->
+  <div class="card">
+    <div class="card-header">Pomodoro Timer</div>
+    <div class="card-body text-center">
+      <h5 id="sessionLabel">Pomodoro Time</h5>
+      <h2 id="timer" class="display-4">25:00</h2>
+      <div class="row justify-content-center mb-3">
+        <div class="col-md-3">
+          <label for="pomodoroSelect" class="form-label">Pomodoro Duration</label>
+          <select id="pomodoroSelect" class="form-select"></select>
         </div>
-        <div class="mt-3 text-end">
-          <button class="btn btn-primary" onclick="saveTimerSettings()">Save Settings</button>
+        <div class="col-md-3">
+          <label for="breakSelect" class="form-label">Break Duration</label>
+          <select id="breakSelect" class="form-select"></select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button class="btn btn-primary w-100" onclick="saveTimerSettings()">Save Settings</button>
         </div>
       </div>
-    </div>
-
-    <!-- Sound Toggle -->
-    <div class="form-check form-switch text-center my-3">
-      <input class="form-check-input" type="checkbox" id="soundToggle" checked>
-      <label class="form-check-label" for="soundToggle">Enable Sound Notifications</label>
-    </div>
-    <audio id="notificationSound" preload="auto">
-      <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-
-    <!-- Task Manager -->
-    <div class="card">
-      <div class="card-header">Task Manager</div>
-      <div class="card-body">
-        <form id="taskForm" class="row g-3">
-          <div class="col-md-3">
-            <input type="text" id="taskInput" class="form-control" placeholder="Enter task" required />
-          </div>
-          <div class="col-md-2">
-            <select id="categoryInput" class="form-select">
-              <option value="Work">Work</option>
-              <option value="Personal">Personal</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <select id="priorityInput" class="form-select">
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <input type="datetime-local" id="dueDateInput" class="form-control" />
-          </div>
-          <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Add Task</button>
-          </div>
-        </form>
-        <ul id="taskList" class="list-group mt-3"></ul>
-      </div>
+      <button class="btn btn-success m-1" onclick="startPomodoro()">Start</button>
+      <button class="btn btn-warning m-1" onclick="pausePomodoro()">Pause</button>
+      <button class="btn btn-danger m-1" onclick="resetPomodoro()">Reset</button>
     </div>
   </div>
 
-  <script>
-    // Timer Settings
+  <!-- Sound Toggle -->
+  <div class="form-check form-switch text-center my-3">
+    <input class="form-check-input" type="checkbox" id="soundToggle" checked>
+    <label class="form-check-label" for="soundToggle">Enable Sound Notifications</label>
+  </div>
+
+  <!-- Audio -->
+  <audio id="notificationSound">
+    <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Task Manager -->
+  <div class="card">
+    <div class="card-header">Task Manager</div>
+    <div class="card-body">
+      <form id="taskForm" class="row g-3">
+        <div class="col-md-3">
+          <input type="text" id="taskInput" class="form-control" placeholder="Enter task" required />
+        </div>
+        <div class="col-md-2">
+          <select id="categoryInput" class="form-select">
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select id="priorityInput" class="form-select">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="datetime-local" id="dueDateInput" class="form-control" />
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Add Task</button>
+        </div>
+      </form>
+      <ul id="taskList" class="list-group mt-3"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  let pomodoroInterval;
+  let pomodoroDuration = 25;
+  let breakDuration = 5;
+  let timeLeft = pomodoroDuration * 60;
+  let isRunning = false;
+  let onBreak = false;
+  let audioPrimed = false;
+
+  function populateDropdowns() {
     const pomodoroSelect = document.getElementById("pomodoroSelect");
     const breakSelect = document.getElementById("breakSelect");
-
-    const pomodoroOptions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
-    const breakOptions = [5, 10, 15, 20, 25, 30];
-
-    let pomodoroDuration = 25;
-    let breakDuration = 5;
-
-    function populateTimerOptions() {
-      pomodoroOptions.forEach(min => {
-        const opt = document.createElement("option");
-        opt.value = min;
-        opt.text = `${min} minutes`;
-        if (min === 25) opt.selected = true;
-        pomodoroSelect.appendChild(opt);
-      });
-
-      breakOptions.forEach(min => {
-        const opt = document.createElement("option");
-        opt.value = min;
-        opt.text = `${min} minutes`;
-        if (min === 5) opt.selected = true;
-        breakSelect.appendChild(opt);
-      });
+    for (let i = 5; i <= 60; i += 5) {
+      pomodoroSelect.innerHTML += `<option value="${i}" ${i === 25 ? 'selected' : ''}>${i} min</option>`;
     }
-
-    function saveTimerSettings() {
-      pomodoroDuration = parseInt(pomodoroSelect.value);
-      breakDuration = parseInt(breakSelect.value);
-      resetPomodoro();
+    for (let i = 5; i <= 30; i += 5) {
+      breakSelect.innerHTML += `<option value="${i}" ${i === 5 ? 'selected' : ''}>${i} min</option>`;
     }
+  }
 
-    // Pomodoro logic
-    let pomodoroInterval;
-    let timeLeft = pomodoroDuration * 60;
-    let isRunning = false;
-    let onBreak = false;
+  function saveTimerSettings() {
+    pomodoroDuration = parseInt(document.getElementById("pomodoroSelect").value);
+    breakDuration = parseInt(document.getElementById("breakSelect").value);
+    resetPomodoro();
+  }
 
-    function updateTimer() {
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-      document.getElementById("timer").textContent =
-        `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-    }
+  function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
 
-    function playNotificationSound(callback) {
-      const soundEnabled = document.getElementById("soundToggle").checked;
-      const sound = document.getElementById("notificationSound");
-
-      if (soundEnabled) {
-        sound.currentTime = 0;
-        sound.play().then(() => {
-          if (callback) callback();
-        }).catch(e => {
-          console.warn("Audio play was blocked or failed:", e);
-          if (callback) callback(); // fallback
-        });
-      } else {
-        if (callback) callback();
-      }
-    }
-
-    function startPomodoro() {
-      if (isRunning) return;
-      isRunning = true;
-      pomodoroInterval = setInterval(() => {
-        if (timeLeft > 0) {
-          timeLeft--;
-          updateTimer();
-        } else {
-          clearInterval(pomodoroInterval);
-          isRunning = false;
-          playNotificationSound(() => {
-            if (!onBreak) {
-              if (confirm("Pomodoro session complete! Start break?")) {
-                startBreak();
-              }
-            } else {
-              if (confirm("Break complete! Start next Pomodoro session?")) {
-                resetPomodoro();
-              }
-            }
-          });
-        }
-      }, 1000);
-    }
-
-    function startBreak() {
-      onBreak = true;
-      timeLeft = breakDuration * 60;
-      document.getElementById("sessionLabel").textContent = "Break Time";
-      updateTimer();
-      startPomodoro();
-    }
-
-    function pausePomodoro() {
-      clearInterval(pomodoroInterval);
-      isRunning = false;
-    }
-
-    function resetPomodoro() {
-      clearInterval(pomodoroInterval);
-      isRunning = false;
-      onBreak = false;
-      timeLeft = pomodoroDuration * 60;
-      document.getElementById("sessionLabel").textContent = "Pomodoro Time";
-      updateTimer();
-    }
-
-    // Task Manager Logic
-    const taskForm = document.getElementById("taskForm");
-    const taskList = document.getElementById("taskList");
-
-    taskForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const task = document.getElementById("taskInput").value.trim();
-      const category = document.getElementById("categoryInput").value;
-      const priority = document.getElementById("priorityInput").value;
-      const dueDate = document.getElementById("dueDateInput").value;
-
-      if (task === "") return;
-
-      const li = document.createElement("li");
-      li.className = "list-group-item d-flex justify-content-between align-items-center";
-      li.innerHTML = `
-        <div>
-          <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
-          <span class="ms-2 priority-${priority}">${priority}</span>
-          ${dueDate ? `<span class="ms-2 text-muted due-date"> | Due: ${new Date(dueDate).toLocaleString()}</span>` : ""}
-        </div>
-        <div>
-          <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
-          <button class="btn btn-primary btn-sm me-2" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-        </div>
-      `;
-      taskList.appendChild(li);
-      taskForm.reset();
+  function primeAudio() {
+    const audio = document.getElementById("notificationSound");
+    audio.volume = 0;
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 1;
+      audioPrimed = true;
     });
+  }
 
-    function deleteTask(button) {
-      const li = button.closest("li");
-      li.remove();
+  function playNotificationSound(callback) {
+    const soundEnabled = document.getElementById("soundToggle").checked;
+    const sound = document.getElementById("notificationSound");
+    if (soundEnabled && audioPrimed) {
+      sound.currentTime = 0;
+      sound.play().then(() => callback && callback()).catch(() => callback && callback());
+    } else {
+      if (callback) callback();
     }
+  }
 
-    function markComplete(button) {
-      const li = button.closest("li");
-      li.classList.toggle("completed-task");
-    }
-
-    function editTask(button) {
-      const li = button.closest("li");
-      li.classList.add("editing");
-
-      document.getElementById("taskInput").value = li.querySelector("strong").textContent;
-      document.getElementById("categoryInput").value = li.querySelector(".badge").textContent;
-      document.getElementById("priorityInput").value = li.querySelector("span[class^='ms-2 priority']").textContent;
-      
-      const dueSpan = li.querySelector(".due-date");
-      if (dueSpan) {
-        const raw = dueSpan.textContent.replace(" | Due: ", "");
-        const date = new Date(raw);
-        document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
+  function startPomodoro() {
+    if (!audioPrimed) primeAudio();
+    if (isRunning) return;
+    isRunning = true;
+    pomodoroInterval = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateTimer();
+      } else {
+        clearInterval(pomodoroInterval);
+        isRunning = false;
+        playNotificationSound(() => {
+          if (!onBreak) {
+            if (confirm("Pomodoro complete! Start break?")) startBreak();
+          } else {
+            if (confirm("Break complete! Start next Pomodoro?")) resetPomodoro();
+          }
+        });
       }
+    }, 1000);
+  }
+
+  function startBreak() {
+    onBreak = true;
+    timeLeft = breakDuration * 60;
+    document.getElementById("sessionLabel").textContent = "Break Time";
+    updateTimer();
+    startPomodoro();
+  }
+
+  function pausePomodoro() {
+    clearInterval(pomodoroInterval);
+    isRunning = false;
+  }
+
+  function resetPomodoro() {
+    clearInterval(pomodoroInterval);
+    isRunning = false;
+    onBreak = false;
+    timeLeft = pomodoroDuration * 60;
+    document.getElementById("sessionLabel").textContent = "Pomodoro Time";
+    updateTimer();
+  }
+
+  const taskForm = document.getElementById("taskForm");
+  const taskList = document.getElementById("taskList");
+
+  taskForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const task = document.getElementById("taskInput").value.trim();
+    const category = document.getElementById("categoryInput").value;
+    const priority = document.getElementById("priorityInput").value;
+    const dueDate = document.getElementById("dueDateInput").value;
+    if (task === "") return;
+
+    const editingLi = document.querySelector("li.editing");
+    if (editingLi) {
+      editingLi.querySelector("strong").textContent = task;
+      editingLi.querySelector(".badge").textContent = category;
+      editingLi.querySelector("span[class^='ms-2 priority']").textContent = priority;
+      const dueSpan = editingLi.querySelector(".due-date");
+      if (dueDate) {
+        if (dueSpan) {
+          dueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
+        } else {
+          const newDue = document.createElement("span");
+          newDue.className = "ms-2 text-muted due-date";
+          newDue.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
+          editingLi.querySelector("div").appendChild(newDue);
+        }
+      } else if (dueSpan) {
+        dueSpan.remove();
+      }
+      editingLi.classList.remove("editing");
+      taskForm.reset();
+      return;
     }
 
-    // Init
-    populateTimerOptions();
-    updateTimer();
-  </script>
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `
+      <div>
+        <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
+        <span class="ms-2 priority-${priority}">${priority}</span>
+        ${dueDate ? `<span class="ms-2 text-muted due-date"> | Due: ${new Date(dueDate).toLocaleString()}</span>` : ""}
+      </div>
+      <div>
+        <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
+        <button class="btn btn-primary btn-sm me-2" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
+      </div>
+    `;
+    taskList.appendChild(li);
+    taskForm.reset();
+  });
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  function deleteTask(button) {
+    const li = button.closest("li");
+    li.remove();
+  }
+
+  function markComplete(button) {
+    const li = button.closest("li");
+    li.classList.toggle("completed-task");
+  }
+
+  function editTask(button) {
+    const li = button.closest("li");
+    li.classList.add("editing");
+    document.getElementById("taskInput").value = li.querySelector("strong").textContent;
+    document.getElementById("categoryInput").value = li.querySelector(".badge").textContent;
+    document.getElementById("priorityInput").value = li.querySelector("span[class^='ms-2 priority']").textContent;
+    const dueSpan = li.querySelector(".due-date");
+    if (dueSpan) {
+      const raw = dueSpan.textContent.replace(" | Due: ", "");
+      const date = new Date(raw);
+      document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
+    }
+  }
+
+  populateDropdowns();
+  updateTimer();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
