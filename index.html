@@ -177,17 +177,17 @@
         } else {
           clearInterval(pomodoroInterval);
           isRunning = false;
-          if (!onBreak) {
-            playNotificationSound(() => {
-              alert("Pomodoro session complete! Time for a break.");
-              startBreak();
-            });
-          } else {
-            playNotificationSound(() => {
-              alert("Break time over. Ready for the next Pomodoro session!");
-              resetPomodoro();
-            });
-          }
+          playNotificationSound(() => {
+            if (!onBreak) {
+              if (confirm("Pomodoro session complete! Start break?")) {
+                startBreak();
+              }
+            } else {
+              if (confirm("Break complete! Start next Pomodoro session?")) {
+                resetPomodoro();
+              }
+            }
+          });
         }
       }, 1000);
     }
