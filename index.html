@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +22,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container py-4">
     <h1 class="text-center mb-4">ProTask</h1>
@@ -39,6 +37,16 @@
         <button class="btn btn-danger m-1" onclick="resetPomodoro()">Reset</button>
       </div>
     </div>
+
+    <!-- Sound Toggle -->
+    <div class="form-check form-switch text-center my-3">
+      <input class="form-check-input" type="checkbox" id="soundToggle" checked>
+      <label class="form-check-label" for="soundToggle">Enable Sound Notifications</label>
+    </div>
+    <audio id="notificationSound" preload="auto">
+      <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
 
     <!-- Task Manager -->
     <div class="card">
@@ -75,7 +83,6 @@
   </div>
 
   <script>
-    // Pomodoro logic
     let pomodoroInterval;
     let timeLeft = 25 * 60;
     let isRunning = false;
@@ -85,6 +92,23 @@
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
       document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function playNotificationSound(callback) {
+      const soundEnabled = document.getElementById("soundToggle").checked;
+      const sound = document.getElementById("notificationSound");
+
+      if (soundEnabled) {
+        sound.currentTime = 0;
+        sound.play().then(() => {
+          if (callback) callback();
+        }).catch(e => {
+          console.warn("Audio play was blocked or failed:", e);
+          if (callback) callback(); // fallback
+        });
+      } else {
+        if (callback) callback();
+      }
     }
 
     function startPomodoro() {
@@ -98,11 +122,15 @@
           clearInterval(pomodoroInterval);
           isRunning = false;
           if (!onBreak) {
-            alert("Pomodoro session complete! Time for a 5-minute break.");
-            startBreak();
+            playNotificationSound(() => {
+              alert("Pomodoro session complete! Time for a 5-minute break.");
+              startBreak();
+            });
           } else {
-            alert("Break time over. Ready for the next Pomodoro session!");
-            resetPomodoro();
+            playNotificationSound(() => {
+              alert("Break time over. Ready for the next Pomodoro session!");
+              resetPomodoro();
+            });
           }
         }
       }, 1000);
@@ -132,7 +160,6 @@
 
     updateTimer();
 
-    // Task manager logic
     const taskForm = document.getElementById("taskForm");
     const taskList = document.getElementById("taskList");
 
@@ -239,5 +266,4 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
