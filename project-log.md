@@ -177,4 +177,55 @@ Added a 5-minute short break timer that automatically starts after each Pomodoro
 
 ---
 
+🗕️ 2025-05-05
+Started Work – Issue #5: Add task due date/time
+
+Began implementing support for due date/time in the task form.
+
+Added a datetime-local input field in the UI.
+
+Setup internal tracking for due dates for each task.
+
+Verified that date inputs were being correctly submitted and captured.
+
+🛠️ Began testing sound notifications
+🧪 Initial setup for detecting Pomodoro session completion using sound and alerts.
+
+---
+
+🗕️ 2025-05-06
+Testing – Pomodoro Sound and Notification
+
+Deployed to GitHub Pages to test sound playback in real environments.
+
+Identified issue: sound did not play at end of Pomodoro or break.
+
+Confirmed this was due to browser autoplay restrictions.
+
+Added fallback confirm dialogs after session ends.
+
+Reworked audio logic to be triggered via user interaction (sound priming).
+
+---
+
+🗕️ 2025-05-07
+✅ Update – Issue #9: Allow custom timer settings for advanced users
+🛠️ Fix – Timer not transitioning after Pomodoro or Break
+🛠️ Fix – Task edit functionality was broken
+Summary:
+
+Added Pomodoro and Break duration dropdowns (Pomodoro: 5–60 mins, Break: 5–30 mins)
+
+Timer now respects custom durations and transitions smoothly
+
+Confirm dialogs now trigger after Pomodoro/Break ends (manual user confirmation required to continue)
+
+Restored task edit logic — now properly updates existing tasks
+
+Audio priming added on first Start click to bypass autoplay restrictions
+
+Known issue: Sound still does not reliably play on GitHub Pages; to be addressed.
+
+---
+
 *This file will be updated regularly to reflect daily progress.*
