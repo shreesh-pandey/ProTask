@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ProTask - Pomodoro + Task Manager</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <style>
     body {
       background-color: #f8f9fa;
@@ -38,13 +38,33 @@
       </div>
     </div>
 
+    <!-- Timer Settings -->
+    <div class="card">
+      <div class="card-header">Timer Settings</div>
+      <div class="card-body">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-6">
+            <label for="pomodoroSelect" class="form-label">Pomodoro Duration (minutes)</label>
+            <select id="pomodoroSelect" class="form-select"></select>
+          </div>
+          <div class="col-md-6">
+            <label for="breakSelect" class="form-label">Break Duration (minutes)</label>
+            <select id="breakSelect" class="form-select"></select>
+          </div>
+        </div>
+        <div class="mt-3 text-end">
+          <button class="btn btn-primary" onclick="saveTimerSettings()">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Sound Toggle -->
     <div class="form-check form-switch text-center my-3">
       <input class="form-check-input" type="checkbox" id="soundToggle" checked>
       <label class="form-check-label" for="soundToggle">Enable Sound Notifications</label>
     </div>
     <audio id="notificationSound" preload="auto">
-      <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg">
+      <source src="https://www.soundjay.com/button/sounds/beep-07.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
 
@@ -54,7 +74,7 @@
       <div class="card-body">
         <form id="taskForm" class="row g-3">
           <div class="col-md-3">
-            <input type="text" id="taskInput" class="form-control" placeholder="Enter task" required>
+            <input type="text" id="taskInput" class="form-control" placeholder="Enter task" required />
           </div>
           <div class="col-md-2">
             <select id="categoryInput" class="form-select">
@@ -71,7 +91,7 @@
             </select>
           </div>
           <div class="col-md-3">
-            <input type="datetime-local" id="dueDateInput" class="form-control">
+            <input type="datetime-local" id="dueDateInput" class="form-control" />
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">Add Task</button>
@@ -83,15 +103,51 @@
   </div>
 
   <script>
+    // Timer Settings
+    const pomodoroSelect = document.getElementById("pomodoroSelect");
+    const breakSelect = document.getElementById("breakSelect");
+
+    const pomodoroOptions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
+    const breakOptions = [5, 10, 15, 20, 25, 30];
+
+    let pomodoroDuration = 25;
+    let breakDuration = 5;
+
+    function populateTimerOptions() {
+      pomodoroOptions.forEach(min => {
+        const opt = document.createElement("option");
+        opt.value = min;
+        opt.text = `${min} minutes`;
+        if (min === 25) opt.selected = true;
+        pomodoroSelect.appendChild(opt);
+      });
+
+      breakOptions.forEach(min => {
+        const opt = document.createElement("option");
+        opt.value = min;
+        opt.text = `${min} minutes`;
+        if (min === 5) opt.selected = true;
+        breakSelect.appendChild(opt);
+      });
+    }
+
+    function saveTimerSettings() {
+      pomodoroDuration = parseInt(pomodoroSelect.value);
+      breakDuration = parseInt(breakSelect.value);
+      resetPomodoro();
+    }
+
+    // Pomodoro logic
     let pomodoroInterval;
-    let timeLeft = 25 * 60;
+    let timeLeft = pomodoroDuration * 60;
     let isRunning = false;
     let onBreak = false;
 
     function updateTimer() {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
-      document.getElementById("timer").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      document.getElementById("timer").textContent =
+        `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     }
 
     function playNotificationSound(callback) {
@@ -123,7 +179,7 @@
           isRunning = false;
           if (!onBreak) {
             playNotificationSound(() => {
-              alert("Pomodoro session complete! Time for a 5-minute break.");
+              alert("Pomodoro session complete! Time for a break.");
               startBreak();
             });
           } else {
@@ -138,7 +194,7 @@
 
     function startBreak() {
       onBreak = true;
-      timeLeft = 5 * 60;
+      timeLeft = breakDuration * 60;
       document.getElementById("sessionLabel").textContent = "Break Time";
       updateTimer();
       startPomodoro();
@@ -153,67 +209,27 @@
       clearInterval(pomodoroInterval);
       isRunning = false;
       onBreak = false;
-      timeLeft = 25 * 60;
+      timeLeft = pomodoroDuration * 60;
       document.getElementById("sessionLabel").textContent = "Pomodoro Time";
       updateTimer();
     }
 
-    updateTimer();
-
+    // Task Manager Logic
     const taskForm = document.getElementById("taskForm");
     const taskList = document.getElementById("taskList");
 
     taskForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const taskInput = document.getElementById("taskInput");
-      const categoryInput = document.getElementById("categoryInput");
-      const priorityInput = document.getElementById("priorityInput");
-      const dueDateInput = document.getElementById("dueDateInput");
-
-      const task = taskInput.value.trim();
-      const category = categoryInput.value;
-      const priority = priorityInput.value;
-      const dueDate = dueDateInput.value;
+      const task = document.getElementById("taskInput").value.trim();
+      const category = document.getElementById("categoryInput").value;
+      const priority = document.getElementById("priorityInput").value;
+      const dueDate = document.getElementById("dueDateInput").value;
 
       if (task === "") return;
 
-      const editingLi = document.querySelector("li.editing");
-      if (editingLi) {
-        editingLi.querySelector("strong").textContent = task;
-        editingLi.querySelector(".badge.bg-secondary").textContent = category;
-
-        const prioritySpans = editingLi.querySelectorAll("span");
-        prioritySpans.forEach(span => {
-          if (span.className.includes("priority-")) span.remove();
-        });
-
-        const newPrioritySpan = document.createElement("span");
-        newPrioritySpan.className = `ms-2 priority-${priority}`;
-        newPrioritySpan.textContent = priority;
-        editingLi.querySelector("div").appendChild(newPrioritySpan);
-
-        const dueSpan = editingLi.querySelector(".due-date");
-        if (dueDate) {
-          if (dueSpan) {
-            dueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
-          } else {
-            const newDueSpan = document.createElement("span");
-            newDueSpan.className = "ms-2 text-muted due-date";
-            newDueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
-            editingLi.querySelector("div").appendChild(newDueSpan);
-          }
-        } else if (dueSpan) {
-          dueSpan.remove();
-        }
-
-        editingLi.classList.remove("editing");
-        taskForm.reset();
-        return;
-      }
-
       const li = document.createElement("li");
-      li.className = `list-group-item d-flex justify-content-between align-items-center`;
+      li.className = "list-group-item d-flex justify-content-between align-items-center";
       li.innerHTML = `
         <div>
           <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
@@ -226,7 +242,6 @@
           <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
         </div>
       `;
-
       taskList.appendChild(li);
       taskForm.reset();
     });
@@ -245,23 +260,21 @@
       const li = button.closest("li");
       li.classList.add("editing");
 
-      const taskText = li.querySelector("strong").textContent;
-      const categoryText = li.querySelector(".badge.bg-secondary").textContent;
-      const priorityClass = Array.from(li.querySelectorAll("span")).find(span => span.className.includes("priority-"));
-      const priorityText = priorityClass ? priorityClass.textContent : "";
-      const dueDateSpan = li.querySelector(".due-date");
-      let dueDateValue = "";
-      if (dueDateSpan) {
-        const raw = dueDateSpan.textContent.replace(" | Due: ", "");
+      document.getElementById("taskInput").value = li.querySelector("strong").textContent;
+      document.getElementById("categoryInput").value = li.querySelector(".badge").textContent;
+      document.getElementById("priorityInput").value = li.querySelector("span[class^='ms-2 priority']").textContent;
+      
+      const dueSpan = li.querySelector(".due-date");
+      if (dueSpan) {
+        const raw = dueSpan.textContent.replace(" | Due: ", "");
         const date = new Date(raw);
-        dueDateValue = date.toISOString().slice(0, 16);
+        document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
       }
-
-      document.getElementById("taskInput").value = taskText;
-      document.getElementById("categoryInput").value = categoryText;
-      document.getElementById("priorityInput").value = priorityText;
-      document.getElementById("dueDateInput").value = dueDateValue;
     }
+
+    // Init
+    populateTimerOptions();
+    updateTimer();
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
