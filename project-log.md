@@ -228,4 +228,20 @@ Known issue: Sound still does not reliably play on GitHub Pages; to be addressed
 
 ---
 
+🗕️ 2025-05-09
+Bugfix – Pomodoro timer halts in background tabs
+Bugfix – Task form submission was refreshing the page
+
+✅ Summary:
+
+Updated Pomodoro logic to use Date.now() for time tracking instead of relying solely on setInterval(), which is throttled in background tabs.
+
+This ensures the timer remains accurate regardless of tab visibility.
+
+Fixed a bug where the task form submission caused a full page refresh, breaking app state.
+
+Task manager logic is now correctly encapsulated in a <script> block.
+
+---
+
 *This file will be updated regularly to reflect daily progress.*
