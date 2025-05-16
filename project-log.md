@@ -2,41 +2,31 @@
 
 ## Week 1: Project Initiation
 
-### \[Day 1] - Project Kickoff
+### [Day 1] - Project Kickoff
+* Chose project concept: Task Tracker using Pomodoro Technique  
+* Finalized project name: **ProTask**  
+* Created GitHub repository and added initial commit with web app  
+* Added basic README with short description  
 
-* Chose project concept: Task Tracker using Pomodoro Technique
-* Finalized project name: **ProTask**
-* Created GitHub repository and added initial commit with web app
-* Added basic README with short description
+### [Day 2] - Planning
+* Defined core features of the application  
+* Created initial GitHub issues for all core features  
+* Started organizing issues under a GitHub Project board  
+* Planned project milestones and discussed user workflow  
 
-### \[Day 2] - Planning
+### [Day 3] - UI Enhancements and Theme Support
+* Added a toggle button for light/dark theme  
+* Moved toggle to the top-right corner and replaced text with moon icon  
+* Verified visual functionality works across modes  
 
-* Defined core features of the application
-* Created initial GitHub issues for all core features
-* Started organizing issues under a GitHub Project board
-* Planned project milestones and discussed user workflow
+### [Day 4] - Project Management Setup
+* Classified issues by priority and type (bug, enhancement, feature, UI)  
+* Discussed use of labels and GitHub Projects status columns  
+* Created plan for documentation structure and updates  
 
-### \[Day 3] - UI Enhancements and Theme Support
-
-* Added a toggle button for light/dark theme
-* Moved toggle to the top-right corner and replaced text with moon icon
-* Verified visual functionality works across modes
-
-### \[Day 4] - Project Management Setup
-
-* Classified issues by priority and type (bug, enhancement, feature, UI)
-* Discussed use of labels and GitHub Projects status columns
-* Created plan for documentation structure and updates
-
-### \[Day 5] - Documentation
-
-* Drafted and finalized detailed README file
-* Began updating and creating supporting documentation files (project-log.md, changelog.md, etc.)
-
-## Notes
-
-* Project will continue to follow structured workflow with proper milestones, labels, and documentation
-* Daily logs will capture completed tasks, decisions made, and next steps
+### [Day 5] - Documentation
+* Drafted and finalized detailed README file  
+* Began updating and creating supporting documentation files (`project-log.md`, `changelog.md`, etc.)  
 
 ---
 
@@ -47,201 +37,140 @@ A detailed log of progress, decisions, and key milestones in the ProTask app.
 ---
 
 ## 🗕️ 2025-04-22
-
 **Project ProTask initiated**
-
-* Defined project scope and objectives
-* Selected tech stack: HTML, CSS, JavaScript
+* Defined project scope and objectives  
+* Selected tech stack: HTML, CSS, JavaScript  
 
 ## 🗕️ 2025-04-23
-
 **Basic layout created**
-
-* Created `index.html`, `style.css`, and `script.js`
-* Initial Pomodoro timer working
+* Created `index.html`, `style.css`, and `script.js`  
+* Initial Pomodoro timer working  
 
 ## 🗕️ 2025-04-30
-
 **GitHub Project Setup**
-
-* Created a new GitHub repository
-* Enabled GitHub Projects for task tracking
-* Created first few issues and grouped tasks under categories
+* Created a new GitHub repository  
+* Enabled GitHub Projects for task tracking  
+* Created first few issues and grouped tasks under categories  
 
 ## 🗕️ 2025-05-01
-
 **Documentation Added**
-
-* `README.md`: Overview, features, workflow, and tech stack
-* `.github/ISSUE_TEMPLATE/feature_request.md`: For new features
-* `.github/ISSUE_TEMPLATE/bug_report.md`: For bug tracking
+* `README.md`: Overview, features, workflow, and tech stack  
+* `.github/ISSUE_TEMPLATE/feature_request.md`: For new features  
+* `.github/ISSUE_TEMPLATE/bug_report.md`: For bug tracking  
 
 **Labels Created**
-
-* Priority: `priority: high`, `medium`, `low`
-* Type: `type: bug`, `type: enhancement`, `type: feature`, `type: UI`
-* Status: `status: to do`, `in progress`, `done` *(used mainly for reference)*
+* Priority: `priority: high`, `medium`, `low`  
+* Type: `type: bug`, `type: enhancement`, `type: feature`, `type: UI`  
+* Status: `status: to do`, `in progress`, `done` (used mainly for reference)  
 
 **Planning Steps Taken**
+* Identified core modules and milestones  
+* Prioritized issues and tagged them with appropriate labels  
+* Decided on consistent commit message format and documentation structure  
 
-* Identified core modules and milestones
-* Prioritized issues and tagged them with appropriate labels
-* Decided on consistent commit message format and documentation structure
-
-## 🗌 \[2025-05-01] Integrated ProTask App Release
+## 🗌 [2025-05-01] Integrated ProTask App Release
 
 ### ✅ What’s New
-
-* **Integrated Pomodoro and Task Manager** into one cohesive app
-* **Live Task Linking**: Selected task appears directly in the Pomodoro timer
-* **Dark Mode Toggle** added for user comfort
-* Improved **UI design** with soft shadows, spacing, and visual hierarchy
-* Simplified layout for better usability on mobile and desktop
+* Integrated Pomodoro and Task Manager into one cohesive app  
+* Live Task Linking: Selected task appears directly in the Pomodoro timer  
+* Dark Mode Toggle added for user comfort  
+* Improved UI design with soft shadows, spacing, and visual hierarchy  
+* Simplified layout for better usability on mobile and desktop  
 
 ### 📁 Folder Changes
-
-* Moved old apps to:
-
-  * `/archive/old-pomodoro/`
-  * `/archive/old-task-manager/`
-* Created new root folder: `/protask-app/`
+* Moved old apps to:  
+  * `/archive/old-pomodoro/`  
+  * `/archive/old-task-manager/`  
+* Created new root folder: `/protask-app/`  
 
 ### 🔧 Tech Stack
-
-* Pure HTML, CSS, and JavaScript
-* No external frameworks used
+* Pure HTML, CSS, and JavaScript  
+* No external frameworks used  
 
 ### 📌 Next Planned Features
-
-* Settings page (custom timer durations)
-* History of completed Pomodoros
-* Daily productivity summary
+* Settings page (custom timer durations)  
+* History of completed Pomodoros  
+* Daily productivity summary  
 
 ---
 
 ## 🗕️ 2025-05-02
-
 **Deployment & Issue Tracking**
+* Deployed to GitHub Pages  
+* Renamed `ProTask.html` to `index.html` to resolve publishing issue  
 
-📦 Deployed ProTask app to GitHub Pages
-
-* Initial issue: GitHub Pages displayed README.md instead of app
-* Root cause: Main HTML file was named `ProTask.html` instead of `index.html`
-* Resolution: Renamed to `index.html`, re-published successfully
-
-🤌 Created Bug Report Issues
-
-* **Issue 1**: No Pause button in Pomodoro
-  ➤ *Description*: The app, once started, doesn’t allow users to pause the timer
-
-* **Issue 2**: No Reset button in Pomodoro
-  ➤ *Description*: The timer cannot be reset mid-session or during break
+🛠️ Created Bug Report Issues:
+* **Issue 1**: No Pause button in Pomodoro  
+* **Issue 2**: No Reset button in Pomodoro  
 
 🗃️ Archived old apps:
-
-* Moved previous Pomodoro and Task Manager apps to `archive/old-pomodoro/` and `archive/task-manager/`
+* `/archive/old-pomodoro/` and `/archive/task-manager/`  
 
 ---
 
 ## 🗕️ 2025-05-03
-
 **Update – Issue #2: Implement task editing functionality**
-
-* Completed all core functionality for editing tasks: users can now update the task name, category, and priority
-
-* Identified and resolved the following sub-issues during testing:
-
-  * 🚷 Category not updating: Category was being removed instead of updated
-  * 🚷 Priority not updating properly: Both old and new priorities were shown; now only the updated one remains
-  * 🚷 Edit button not working after one edit: Fixed logic to allow repeated edits for the same task
-
-* Verified and tested all updates successfully in the live environment
+* Completed full task edit flow with bug fixes:
+  * Category, priority, edit logic
+* Verified in live environment  
 
 ---
 
-## ✅ Update – Issue #5: Add task due date/time
+## 🗕️ 2025-05-04
+### ✅ Update – Issue #5: Add task due date/time
+* Added `datetime-local` input and editable due dates
 
-**Date**: 2025-05-04
-
-**Summary**:
-Implemented due date/time functionality in the task manager. A new `datetime-local` input field was added to the task creation form, allowing users to assign a deadline to each task. The due date is displayed next to the task and is also editable. The implementation ensures previous features (category, priority, completion, and editing) remain unaffected.
-
----
-
-## ✅ Update – Issue #8: Implement 5-minute short break timer
-
-**Date**: 2025-05-04
-
-**Summary**:
-Added a 5-minute short break timer that automatically starts after each Pomodoro session ends. The break timer countdown is integrated into the main timer logic and resets correctly after break completion, smoothly transitioning back to the next Pomodoro session. Ensured smooth switching and compatibility with pause, resume, and reset functionalities.
+### ✅ Update – Issue #8: Implement 5-minute short break timer
+* Timer now switches automatically between Pomodoro and short break  
 
 ---
 
-🗕️ 2025-05-05
-Started Work – Issue #5: Add task due date/time
-
-Began implementing support for due date/time in the task form.
-
-Added a datetime-local input field in the UI.
-
-Setup internal tracking for due dates for each task.
-
-Verified that date inputs were being correctly submitted and captured.
-
-🛠️ Began testing sound notifications
-🧪 Initial setup for detecting Pomodoro session completion using sound and alerts.
+## 🗕️ 2025-05-05
+* Continued due date support  
+* Started working on sound notifications  
 
 ---
 
-🗕️ 2025-05-06
-Testing – Pomodoro Sound and Notification
-
-Deployed to GitHub Pages to test sound playback in real environments.
-
-Identified issue: sound did not play at end of Pomodoro or break.
-
-Confirmed this was due to browser autoplay restrictions.
-
-Added fallback confirm dialogs after session ends.
-
-Reworked audio logic to be triggered via user interaction (sound priming).
+## 🗕️ 2025-05-06
+* Deployed for sound test  
+* Added fallback confirm dialogs  
+* Introduced sound priming  
 
 ---
 
-🗕️ 2025-05-07
-✅ Update – Issue #9: Allow custom timer settings for advanced users
-🛠️ Fix – Timer not transitioning after Pomodoro or Break
-🛠️ Fix – Task edit functionality was broken
-Summary:
-
-Added Pomodoro and Break duration dropdowns (Pomodoro: 5–60 mins, Break: 5–30 mins)
-
-Timer now respects custom durations and transitions smoothly
-
-Confirm dialogs now trigger after Pomodoro/Break ends (manual user confirmation required to continue)
-
-Restored task edit logic — now properly updates existing tasks
-
-Audio priming added on first Start click to bypass autoplay restrictions
-
-Known issue: Sound still does not reliably play on GitHub Pages; to be addressed.
+## 🗕️ 2025-05-07
+✅ Update – Issue #9: Allow custom timer settings  
+🛠️ Fix – Timer transitions and task editing  
+* Added dropdowns for Pomodoro/Break durations  
+* Improved confirm-based transitions and sound setup  
 
 ---
 
-🗕️ 2025-05-09
-Bugfix – Pomodoro timer halts in background tabs
-Bugfix – Task form submission was refreshing the page
+## 🗕️ 2025-05-09
+🐞 Fix – Timer paused in background  
+🐞 Fix – Task form refresh bug  
+* Switched to `Date.now()`-based timing  
+* Corrected form logic to prevent reload  
 
-✅ Summary:
+---
 
-Updated Pomodoro logic to use Date.now() for time tracking instead of relying solely on setInterval(), which is throttled in background tabs.
+## 🗕️ 2025-05-10
+🔔 Fix – Sound notification not working  
+* Finalized working sound system with toggle  
 
-This ensures the timer remains accurate regardless of tab visibility.
+---
 
-Fixed a bug where the task form submission caused a full page refresh, breaking app state.
+## 🗕️ 2025-05-11
+🛠️ Fix – Timer buttons and dropdown visibility  
+* Restored all missing controls and cleaned script errors  
 
-Task manager logic is now correctly encapsulated in a <script> block.
+---
 
+## 🗕️ 2025-05-16
+✨ Feature – Long Break after 4 Pomodoros (Issue #9)  
+* Added long break logic with dropdown (5–30 mins)  
+* Break switches to long after every 4 Pomodoros  
+* Labels streamlined to “Pomodoro” and “Break”  
 ---
 
 *This file will be updated regularly to reflect daily progress.*
