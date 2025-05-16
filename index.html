@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ProTask - Pomodoro + Task Manager</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <style>
@@ -28,13 +27,33 @@
       <h2 id="timer" class="display-4">25:00</h2>
       <div class="row justify-content-center mb-3">
         <div class="col-md-3">
-          <label for="pomodoroSelect" class="form-label">Pomodoro Duration</label>
-          <select id="pomodoroSelect" class="form-select"></select>
+          <label for="pomodoroSelect" class="form-label">Pomodoro</label>
+          <select id="pomodoroSelect" class="form-select">
+  <option value="5">5 min</option>
+  <option value="10">10 min</option>
+  <option value="15">15 min</option>
+  <option value="20">20 min</option>
+  <option value="25" selected>25 min</option>
+  <option value="30">30 min</option>
+  <option value="35">35 min</option>
+  <option value="40">40 min</option>
+  <option value="45">45 min</option>
+  <option value="50">50 min</option>
+  <option value="55">55 min</option>
+  <option value="60">60 min</option>
+</select>
         </div>
         <div class="col-md-3">
-          <label for="breakSelect" class="form-label">Break Duration</label>
-          <select id="breakSelect" class="form-select"></select>
-        </div>
+  <label for="longBreakSelect" class="form-label">Break</label>
+  <select id="longBreakSelect" class="form-select">
+  <option value="5">5 min</option>
+  <option value="10">10 min</option>
+  <option value="15" selected>15 min</option>
+  <option value="20">20 min</option>
+  <option value="25">25 min</option>
+  <option value="30">30 min</option>
+</select>
+</div>
         <div class="col-md-2 d-flex align-items-end">
           <button class="btn btn-primary w-100" onclick="saveTimerSettings()">Save Settings</button>
         </div>
@@ -94,25 +113,18 @@
   let pomodoroInterval;
   let pomodoroDuration = 25;
   let breakDuration = 5;
+  let longBreakDuration = 15;
+  let pomodoroCount = 0;
   let isRunning = false;
   let onBreak = false;
   let audioPrimed = false;
+  let upcomingBreakType = 'short';
   let endTime = null;
-
-  function populateDropdowns() {
-    const pomodoroSelect = document.getElementById("pomodoroSelect");
-    const breakSelect = document.getElementById("breakSelect");
-    for (let i = 5; i <= 60; i += 5) {
-      pomodoroSelect.innerHTML += `<option value="${i}" ${i === 25 ? 'selected' : ''}>${i} min</option>`;
-    }
-    for (let i = 5; i <= 30; i += 5) {
-      breakSelect.innerHTML += `<option value="${i}" ${i === 5 ? 'selected' : ''}>${i} min</option>`;
-    }
-  }
 
   function saveTimerSettings() {
     pomodoroDuration = parseInt(document.getElementById("pomodoroSelect").value);
     breakDuration = parseInt(document.getElementById("breakSelect").value);
+    longBreakDuration = parseInt(document.getElementById("longBreakSelect").value);
     resetPomodoro();
   }
 
@@ -124,13 +136,17 @@
 
   function primeAudio() {
     const audio = document.getElementById("notificationSound");
-    audio.volume = 0;
-    audio.play().then(() => {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 1;
-      audioPrimed = true;
-    });
+    if (!audioPrimed) {
+      audio.volume = 0;
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1;
+        audioPrimed = true;
+      }).catch(() => {
+        audioPrimed = false;
+      });
+    }
   }
 
   function playNotificationSound(callback) {
@@ -138,14 +154,19 @@
     const sound = document.getElementById("notificationSound");
     if (soundEnabled && audioPrimed) {
       sound.currentTime = 0;
-      sound.play().then(() => callback && callback()).catch(() => callback && callback());
+      sound.play().then(() => {
+        if (callback) callback();
+      }).catch(err => {
+        console.warn("Sound play failed:", err);
+        if (callback) callback();
+      });
     } else {
       if (callback) callback();
     }
   }
 
   function startPomodoro() {
-    if (!audioPrimed) primeAudio();
+    primeAudio();
     if (isRunning) return;
     isRunning = true;
 
@@ -171,7 +192,10 @@
 
   function startBreak() {
     onBreak = true;
-    document.getElementById("sessionLabel").textContent = "Break Time";
+    const duration = upcomingBreakType === 'long' ? longBreakDuration : breakDuration;
+    document.getElementById("sessionLabel").textContent = upcomingBreakType === 'long' ? "Long Break Time" : "Break Time";
+    endTime = Date.now() + duration * 60 * 1000;
+    updateTimerDisplay(duration * 60);
     startPomodoro();
   }
 
@@ -181,6 +205,12 @@
   }
 
   function resetPomodoro() {
+    pomodoroCount++;
+    if (pomodoroCount % 4 === 0) {
+      upcomingBreakType = 'long';
+    } else {
+      upcomingBreakType = 'short';
+    }
     clearInterval(pomodoroInterval);
     isRunning = false;
     onBreak = false;
@@ -267,84 +297,11 @@
       const date = new Date(raw);
       document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
     }
-  };
+  }
 populateDropdowns();
-  updateTimerDisplay(pomodoroDuration * 60);
+updateTimerDisplay(pomodoroDuration * 60);
 </script>
-<script>
-  document.getElementById("taskForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const task = document.getElementById("taskInput").value.trim();
-    const category = document.getElementById("categoryInput").value;
-    const priority = document.getElementById("priorityInput").value;
-    const dueDate = document.getElementById("dueDateInput").value;
-    if (task === "") return;
 
-    const editingLi = document.querySelector("li.editing");
-    if (editingLi) {
-      editingLi.querySelector("strong").textContent = task;
-      editingLi.querySelector(".badge").textContent = category;
-      editingLi.querySelector("span[class^='ms-2 priority']").textContent = priority;
-      const dueSpan = editingLi.querySelector(".due-date");
-      if (dueDate) {
-        if (dueSpan) {
-          dueSpan.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
-        } else {
-          const newDue = document.createElement("span");
-          newDue.className = "ms-2 text-muted due-date";
-          newDue.textContent = ` | Due: ${new Date(dueDate).toLocaleString()}`;
-          editingLi.querySelector("div").appendChild(newDue);
-        }
-      } else if (dueSpan) {
-        dueSpan.remove();
-      }
-      editingLi.classList.remove("editing");
-      taskForm.reset();
-      return;
-    }
-
-    const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center";
-    li.innerHTML = `
-      <div>
-        <strong>${task}</strong> <span class="badge bg-secondary ms-2">${category}</span>
-        <span class="ms-2 priority-${priority}">${priority}</span>
-        ${dueDate ? `<span class="ms-2 text-muted due-date"> | Due: ${new Date(dueDate).toLocaleString()}</span>` : ""}
-      </div>
-      <div>
-        <button class="btn btn-success btn-sm me-2" onclick="markComplete(this)"><i class="fas fa-check"></i></button>
-        <button class="btn btn-primary btn-sm me-2" onclick="editTask(this)"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="deleteTask(this)"><i class="fas fa-trash"></i></button>
-      </div>
-    `;
-    document.getElementById("taskList").appendChild(li);
-    taskForm.reset();
-  });
-
-  function deleteTask(button) {
-    const li = button.closest("li");
-    li.remove();
-  }
-
-  function markComplete(button) {
-    const li = button.closest("li");
-    li.classList.toggle("completed-task");
-  }
-
-  function editTask(button) {
-    const li = button.closest("li");
-    li.classList.add("editing");
-    document.getElementById("taskInput").value = li.querySelector("strong").textContent;
-    document.getElementById("categoryInput").value = li.querySelector(".badge").textContent;
-    document.getElementById("priorityInput").value = li.querySelector("span[class^='ms-2 priority']").textContent;
-    const dueSpan = li.querySelector(".due-date");
-    if (dueSpan) {
-      const raw = dueSpan.textContent.replace(" | Due: ", "");
-      const date = new Date(raw);
-      document.getElementById("dueDateInput").value = date.toISOString().slice(0, 16);
-    }
-  }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
